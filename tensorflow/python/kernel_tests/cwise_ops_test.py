@@ -166,6 +166,13 @@ class UnaryOpTest(tf.test.TestCase):
   def _sigmoid(self, x):
     return 1.0 / (1.0 + np.exp(-x))
 
+  def _sigmoid_grad(self , x):
+    sigm = _self.sigmoid(x)
+    return sigm * ( 1- sigm)
+
+  def _tanh_grad(self, x):
+    return (1 - np.square(np.tanh(x)))
+
   def _replace_domain_error_with_inf(self, fn):
     def func(x):
       try:
@@ -194,7 +201,9 @@ class UnaryOpTest(tf.test.TestCase):
     self._compareBoth(x, np.exp, tf.exp)
     self._compareBoth(z, np.log, tf.log)
     self._compareBoth(x, np.tanh, tf.tanh)
+    self._compareBoth(x, self._tanh_grad, tf.tanh_grad)
     self._compareBoth(x, self._sigmoid, tf.sigmoid)
+    self._compareBoth(x, self._sigmoid_grad, tf.sigmoid_grad)
     self._compareBoth(y, np.sign, tf.sign)
     self._compareBoth(x, np.sin, tf.sin)
     self._compareBoth(x, np.cos, tf.cos)
@@ -214,6 +223,7 @@ class UnaryOpTest(tf.test.TestCase):
     self._compareBothSparse(x, np.square, tf.square)
     self._compareBothSparse(z, np.sqrt, tf.sqrt, tol=1e-3)
     self._compareBothSparse(x, np.tanh, tf.tanh)
+    self._compareBothSparse(x, self._tanh_grad, tf.tanh_grad)
     self._compareBothSparse(y, np.sign, tf.sign)
     self._compareBothSparse(x, np.vectorize(math.erf), tf.erf)
 
@@ -236,7 +246,9 @@ class UnaryOpTest(tf.test.TestCase):
     self._compareBoth(x, np.exp, tf.exp)
     self._compareBoth(x, np.log, tf.log)
     self._compareBoth(x, np.tanh, tf.tanh)
+    self._compareBoth(x, self._tanh_grad, tf.tanh_grad)
     self._compareBoth(x, self._sigmoid, tf.sigmoid)
+    self._compareBoth(x, self._sigmoid_grad, tf.sigmoid_grad)
     self._compareBoth(x, np.sign, tf.sign)
     self._compareBoth(x, np.sin, tf.sin)
     self._compareBoth(x, np.cos, tf.cos)
@@ -254,6 +266,7 @@ class UnaryOpTest(tf.test.TestCase):
     self._compareBothSparse(x, np.square, tf.square)
     self._compareBothSparse(x, np.sqrt, tf.sqrt, tol=1e-3)
     self._compareBothSparse(x, np.tanh, tf.tanh)
+    self._compareBothSparse(x, self._tanh_grad, tf.tanh_grad)
     self._compareBothSparse(x, np.sign, tf.sign)
     self._compareBothSparse(x, np.sign, tf.erf)
 
@@ -273,7 +286,9 @@ class UnaryOpTest(tf.test.TestCase):
     self._compareBoth(x, np.exp, tf.exp)
     self._compareBoth(z, np.log, tf.log)
     self._compareBoth(x, np.tanh, tf.tanh)
+    self._compareBoth(x, self._tanh_grad, tf.tanh_grad)
     self._compareBoth(x, self._sigmoid, tf.sigmoid)
+    self._compareBoth(x, self._sigmoid_grad, tf.sigmoid_grad)
     self._compareBoth(y, np.sign, tf.sign)
     self._compareBoth(x, np.sin, tf.sin)
     self._compareBoth(x, np.cos, tf.cos)
@@ -293,6 +308,7 @@ class UnaryOpTest(tf.test.TestCase):
     self._compareBothSparse(x, np.square, tf.square)
     self._compareBothSparse(z, np.sqrt, tf.sqrt, tol=1e-3)
     self._compareBothSparse(x, np.tanh, tf.tanh)
+    self._compareBothSparse(x, self._tanh_grad, tf.tanh_grad)
     self._compareBothSparse(y, np.sign, tf.sign)
     self._compareBothSparse(x, np.vectorize(math.erf), tf.erf)
 
@@ -311,7 +327,9 @@ class UnaryOpTest(tf.test.TestCase):
     self._compareBoth(x, np.exp, tf.exp)
     self._compareBoth(z, np.log, tf.log)
     self._compareBoth(x, np.tanh, tf.tanh)
+    self._compareBoth(x, self._tanh_grad, tf.tanh_grad)
     self._compareBoth(x, self._sigmoid, tf.sigmoid)
+    self._compareBoth(x, self._sigmoid_grad, tf.sigmoid_grad)
     self._compareBoth(y, np.sign, tf.sign)
     self._compareBoth(x, np.sin, tf.sin)
     self._compareBoth(x, np.cos, tf.cos)
@@ -327,6 +345,7 @@ class UnaryOpTest(tf.test.TestCase):
     self._compareBothSparse(x, np.square, tf.square)
     self._compareBothSparse(z, np.sqrt, tf.sqrt, tol=1e-3)
     self._compareBothSparse(x, np.tanh, tf.tanh)
+    self._compareBothSparse(x, self._tanh_grad, tf.tanh_grad)
     self._compareBothSparse(y, np.sign, tf.sign)
     self._compareBothSparse(x, np.vectorize(math.erf), tf.erf, tol=1e-3)
 
@@ -374,7 +393,9 @@ class UnaryOpTest(tf.test.TestCase):
     self._compareCpu(x, np.exp, tf.exp)
     self._compareCpu(y, np.log, tf.log)
     self._compareCpu(x, np.tanh, tf.tanh)
+    self._compareCpu(x, self._tanh_grad, tf.tanh_grad)
     self._compareCpu(x, self._sigmoid, tf.sigmoid)
+    self._compareCpu(x, self._sigmoid_grad, tf.sigmoid_grad)
     self._compareCpu(x, np.sin, tf.sin)
     self._compareCpu(x, np.cos, tf.cos)
 
@@ -383,6 +404,7 @@ class UnaryOpTest(tf.test.TestCase):
     self._compareBothSparse(x, np.square, tf.square)
     self._compareBothSparse(x, np.sqrt, tf.sqrt, 1e-3)
     self._compareBothSparse(x, np.tanh, tf.tanh)
+    self._compareBothSparse(x, self._tanh_grad, tf.tanh_grad)
 
     # Numpy uses an incorrect definition of sign; use the right one instead.
     def complex_sign(x):
@@ -405,7 +427,9 @@ class UnaryOpTest(tf.test.TestCase):
     self._compareCpu(x, np.exp, tf.exp)
     self._compareCpu(y, np.log, tf.log)
     self._compareCpu(x, np.tanh, tf.tanh)
+    self._compareCpu(x, self._tanh_grad, tf.tanh_grad)
     self._compareCpu(x, self._sigmoid, tf.sigmoid)
+    self._compareCpu(x, self._sigmoid_grad, tf.sigmoid_grad)
     self._compareCpu(x, np.sin, tf.sin)
     self._compareCpu(x, np.cos, tf.cos)
 
@@ -414,6 +438,7 @@ class UnaryOpTest(tf.test.TestCase):
     self._compareBothSparse(x, np.square, tf.square)
     self._compareBothSparse(x, np.sqrt, tf.sqrt, 1e-3)
     self._compareBothSparse(x, np.tanh, tf.tanh)
+    self._compareBothSparse(x, self._tanh_grad, tf.tanh_grad)
 
     # Numpy uses an incorrect definition of sign; use the right one instead.
     def complex_sign(x):

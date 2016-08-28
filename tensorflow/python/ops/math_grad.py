@@ -312,7 +312,7 @@ def _TanhGradGrad(op, grad):
     if y.dtype.is_complex:
       y = math_ops.conj(y)
     t = math_ops.tanh(y)
-    return grad * (-2 * t * (1 - t * t))
+    return grad * (-2 * t * (1 - tf.square(t)))
 
 
 @ops.RegisterGradient("Erf")
@@ -419,6 +419,7 @@ def _SigmoidGrad(op, grad):
 
 @ops.RegisterGradient("SigmoidGrad")
 def _SigmoidGradGrad(op, grad):
+  """Returns grad * sigmoid(x) * (1 - sigmoid(x)) * (1 - 2 * sigmoid(x))"""
   y = op.outputs[0]
   with ops.control_dependencies([grad.op]):
     if y.dtype.is_complex:
